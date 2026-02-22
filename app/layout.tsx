@@ -3,6 +3,8 @@ import "./globals.css";
 import Script from "next/script";
 import { WhatsAppCTA } from "@/components/WhatsAppCTA";
 import { AIChatbot } from "@/components/AIChatbot";
+import SmoothScroll from "@/components/animations/SmoothScroll";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 export const metadata: Metadata = {
   title: "DigitalRise Marketing | Premium Service Architecture",
@@ -26,9 +28,12 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
-        <WhatsAppCTA />
-        <AIChatbot />
+        <CustomCursor />
+        <SmoothScroll>
+          {children}
+          <WhatsAppCTA />
+          <AIChatbot />
+        </SmoothScroll>
       </body>
     </html>
   );

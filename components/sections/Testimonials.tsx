@@ -1,6 +1,8 @@
 "use client";
 
 import { Star, Quote } from "lucide-react";
+import { FadeIn } from "@/components/animations/FadeIn";
+import { StaggerContainer } from "@/components/animations/StaggerContainer";
 
 interface Testimonial {
     name: string;
@@ -65,54 +67,57 @@ const Testimonials = () => {
             <div className="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] bg-dr-orange/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-20">
-                    <h2 className="text-xs font-black tracking-[0.4em] text-dr-gold uppercase mb-6">
-                        Client Outcomes
-                    </h2>
-                    <h3 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-6">
-                        Don't just take our word for it.
-                    </h3>
-                    <p className="text-dr-text/60 text-lg max-w-2xl mx-auto">
-                        See how high-growth brands are scaling faster with our integrated systems.
-                    </p>
-                </div>
+                <FadeIn direction="up">
+                    <div className="text-center mb-20">
+                        <h2 className="text-xs font-black tracking-[0.4em] text-dr-gold uppercase mb-6">
+                            Client Outcomes
+                        </h2>
+                        <h3 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-6">
+                            Don't just take our word for it.
+                        </h3>
+                        <p className="text-dr-text/60 text-lg max-w-2xl mx-auto">
+                            See how high-growth brands are scaling faster with our integrated systems.
+                        </p>
+                    </div>
+                </FadeIn>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <div
-                            key={index}
-                            className="glass p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative group hover:border-dr-gold/20 transition-all duration-300"
-                        >
-                            <div className="absolute -top-4 -left-4 w-12 h-12 bg-dr-navy border border-white/10 rounded-full flex items-center justify-center text-dr-gold shadow-xl">
-                                <Quote size={20} fill="currentColor" />
-                            </div>
-
-                            <div className="flex gap-1 mb-6 mt-2">
-                                {[...Array(testimonial.rating)].map((_, i) => (
-                                    <Star key={i} size={16} className="text-dr-gold fill-dr-gold" />
-                                ))}
-                            </div>
-
-                            <p className="text-white/80 leading-relaxed mb-8 italic">
-                                "{testimonial.content}"
-                            </p>
-
-                            <div className="flex items-center gap-4 mt-auto">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-dr-gold to-dr-orange flex items-center justify-center text-dr-navy font-bold text-lg">
-                                    {testimonial.name.charAt(0)}
+                        <FadeIn useVariants key={index}>
+                            <div
+                                className="glass p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative group hover:border-dr-gold/20 transition-all duration-300 h-full flex flex-col"
+                            >
+                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-dr-navy border border-white/10 rounded-full flex items-center justify-center text-dr-gold shadow-xl">
+                                    <Quote size={20} fill="currentColor" />
                                 </div>
-                                <div>
-                                    <h4 className="font-bold text-white text-sm">
-                                        {testimonial.name}
-                                    </h4>
-                                    <p className="text-xs text-white/40 uppercase tracking-wider">
-                                        {testimonial.role}, {testimonial.company}
-                                    </p>
+
+                                <div className="flex gap-1 mb-6 mt-2">
+                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                        <Star key={i} size={16} className="text-dr-gold fill-dr-gold" />
+                                    ))}
+                                </div>
+
+                                <p className="text-white/80 leading-relaxed mb-8 italic">
+                                    "{testimonial.content}"
+                                </p>
+
+                                <div className="flex items-center gap-4 mt-auto">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-dr-gold to-dr-orange flex items-center justify-center text-dr-navy font-bold text-lg">
+                                        {testimonial.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-white text-sm">
+                                            {testimonial.name}
+                                        </h4>
+                                        <p className="text-xs text-white/40 uppercase tracking-wider">
+                                            {testimonial.role}, {testimonial.company}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </FadeIn>
                     ))}
-                </div>
+                </StaggerContainer>
             </div>
         </section>
     );

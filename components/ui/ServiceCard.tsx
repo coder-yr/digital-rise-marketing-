@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { MouseEvent, useRef } from "react";
 
 interface ServiceCardProps {
     icon: string;
@@ -40,8 +41,21 @@ const ServiceCard = ({
         green: "group-hover:shadow-[0_0_80px_-20px_rgba(16,185,129,0.3)]",
     };
 
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+        cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+    };
+
     return (
         <div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
             className={`service-card group relative p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm flex flex-col justify-between overflow-hidden ${wide ? "h-full" : "h-[420px]"
                 } ${glowColors[badgeColor]}`}
         >

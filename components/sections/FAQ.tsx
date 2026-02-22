@@ -2,6 +2,8 @@
 
 import { Plus, Minus } from "lucide-react";
 import { useState } from "react";
+import { FadeIn } from "@/components/animations/FadeIn";
+import { StaggerContainer } from "@/components/animations/StaggerContainer";
 
 interface FAQItem {
     question: string;
@@ -59,48 +61,51 @@ const FAQ = () => {
             />
 
             <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-20">
-                    <h2 className="text-xs font-black tracking-[0.4em] text-dr-gold uppercase mb-6">
-                        Common Questions
-                    </h2>
-                    <h3 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-6">
-                        Everything you need to know.
-                    </h3>
-                </div>
+                <FadeIn direction="up">
+                    <div className="text-center mb-20">
+                        <h2 className="text-xs font-black tracking-[0.4em] text-dr-gold uppercase mb-6">
+                            Common Questions
+                        </h2>
+                        <h3 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-6">
+                            Everything you need to know.
+                        </h3>
+                    </div>
+                </FadeIn>
 
-                <div className="space-y-4">
+                <StaggerContainer className="space-y-4">
                     {faqs.map((faq, index) => (
-                        <div
-                            key={index}
-                            className={`glass rounded-2xl border transition-all duration-300 overflow-hidden ${openIndex === index
+                        <FadeIn useVariants key={index}>
+                            <div
+                                className={`glass rounded-2xl border transition-all duration-300 overflow-hidden ${openIndex === index
                                     ? "border-dr-gold/30 bg-white/[0.05]"
                                     : "border-white/5 bg-white/[0.02] hover:border-white/10"
-                                }`}
-                        >
-                            <button
-                                onClick={() => toggleFAQ(index)}
-                                className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
-                                aria-expanded={openIndex === index}
-                            >
-                                <span className={`font-bold text-lg ${openIndex === index ? 'text-dr-gold' : 'text-white'}`}>
-                                    {faq.question}
-                                </span>
-                                <span className={`ml-4 flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-dr-gold' : 'text-white/40'}`}>
-                                    {openIndex === index ? <Minus size={20} /> : <Plus size={20} />}
-                                </span>
-                            </button>
-
-                            <div
-                                className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                                     }`}
                             >
-                                <div className="p-6 pt-0 text-dr-text/80 leading-relaxed border-t border-white/5">
-                                    {faq.answer}
+                                <button
+                                    onClick={() => toggleFAQ(index)}
+                                    className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                                    aria-expanded={openIndex === index}
+                                >
+                                    <span className={`font-bold text-lg ${openIndex === index ? 'text-dr-gold' : 'text-white'}`}>
+                                        {faq.question}
+                                    </span>
+                                    <span className={`ml-4 flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-dr-gold' : 'text-white/40'}`}>
+                                        {openIndex === index ? <Minus size={20} /> : <Plus size={20} />}
+                                    </span>
+                                </button>
+
+                                <div
+                                    className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                                        }`}
+                                >
+                                    <div className="p-6 pt-0 text-dr-text/80 leading-relaxed border-t border-white/5">
+                                        {faq.answer}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </FadeIn>
                     ))}
-                </div>
+                </StaggerContainer>
             </div>
         </section>
     );

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, Layout, BarChart3, Megaphone, Cpu, Clapperboard, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Magnetic from "@/components/animations/Magnetic";
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -42,7 +43,10 @@ const Header = () => {
     };
 
     return (
-        <header
+        <motion.header
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || hoveredService
                 ? "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5 py-2"
                 : "bg-transparent py-4"
@@ -131,32 +135,50 @@ const Header = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.2 }}
-                        className="hidden md:block absolute top-[100%] left-0 right-0 bg-[#0A0E1A]/95 backdrop-blur-xl border-t border-white/5 shadow-2xl py-12"
+                        className="hidden md:block absolute top-[100%] left-0 right-0 bg-black border-t border-b border-white/10 shadow-2xl py-12 z-[100]"
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                     >
                         <div className="max-w-7xl mx-auto px-6 grid grid-cols-4 gap-8">
-                            <div className="col-span-1">
+                            <motion.div
+                                className="col-span-1"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1, duration: 0.4 }}
+                            >
                                 <h4 className="text-xs font-black tracking-[0.2em] text-[#D4AF37] uppercase mb-4">Our Services</h4>
                                 <h3 className="text-2xl font-bold text-white mb-4">Integrated Growth Architecture</h3>
                                 <p className="text-sm text-white/50 leading-relaxed mb-6">
                                     We don't just run ads or build websites. We build interconnected systems that compound over time.
                                 </p>
-                                <Link href="/#services" className="text-sm font-bold text-white underline decoration-[#D4AF37] underline-offset-4 hover:text-[#D4AF37] transition-colors">
-                                    View All Services
-                                </Link>
-                            </div>
-                            <div className="col-span-3 grid grid-cols-3 gap-6">
-                                {services.map((service) => (
-                                    <Link
-                                        key={service.title}
-                                        href={service.href}
-                                        className="group p-4 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 hover:border-[#D4AF37]/30 transition-all duration-300"
-                                    >
-                                        <service.icon size={24} className="text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform" />
-                                        <h5 className="font-bold text-white text-sm mb-1 group-hover:text-[#D4AF37] transition-colors">{service.title}</h5>
-                                        <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors">{service.desc}</p>
+                                <Magnetic strength={0.2}>
+                                    <Link href="/#services" className="inline-block text-sm font-bold text-white underline decoration-[#D4AF37] underline-offset-4 hover:text-[#D4AF37] transition-colors">
+                                        View All Services
                                     </Link>
+                                </Magnetic>
+                            </motion.div>
+                            <div className="col-span-3 grid grid-cols-3 gap-6 group/megamenu">
+                                {services.map((service, index) => (
+                                    <motion.div
+                                        key={service.title}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.1 + (index * 0.05), duration: 0.4 }}
+                                    >
+                                        <Magnetic strength={0.1}>
+                                            <Link
+                                                href={service.href}
+                                                className="group/link block h-full p-4 bg-white/5 border border-white/5 rounded-xl transition-all duration-300 hover:bg-white/10 hover:border-[#D4AF37]/30 group-hover/megamenu:opacity-50 hover:!opacity-100"
+                                            >
+                                                <service.icon size={24} className="text-[#D4AF37] mb-3 group-hover/link:scale-110 transition-transform" />
+                                                <h5 className="font-bold text-white text-sm mb-1 group-hover/link:text-[#D4AF37] transition-colors relative inline-block">
+                                                    {service.title}
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#D4AF37] transition-all duration-300 group-hover/link:w-full"></span>
+                                                </h5>
+                                                <p className="text-xs text-white/40 group-hover/link:text-white/60 transition-colors mt-2">{service.desc}</p>
+                                            </Link>
+                                        </Magnetic>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
@@ -230,7 +252,7 @@ const Header = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header>
+        </motion.header>
     );
 };
 
