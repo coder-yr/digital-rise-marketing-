@@ -18,7 +18,9 @@ interface BlogPost {
     content?: string;
 }
 
-export default function BlogIndexClient({ blogs }: { blogs: BlogPost[] }) {
+type BlogIndexItem = Partial<BlogPost> & { slug: string; title: string };
+
+export default function BlogIndexClient({ blogs }: { blogs: BlogIndexItem[] }) {
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
