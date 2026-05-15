@@ -1,4 +1,4 @@
-const DEFAULT_API_URL = 'https://digitalrise-marketing-backend-1-o9fm.onrender.com';
+const DEFAULT_API_URL = 'https://digitalrise-marketing-backend-3.onrender.com';
 const LOCAL_API_URL = 'http://localhost:5000';
 
 export function getApiBaseUrls() {
