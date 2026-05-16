@@ -61,6 +61,106 @@ export default function ProjectTemplate({ project }: { project: ProjectData }) {
     const images = safeParse(project.images);
     const mainImage = images && images.length > 0 ? images[0] : null;
 
+    const enhanceContent = (html: string) => {
+        if (!html) return '';
+        
+        let enhanced = html
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, '&');
+
+        const lines = enhanced.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+        let htmlLines: string[] = [];
+        let inList = false;
+        let listType = '';
+
+        const closeListIfNeeded = () => {
+            if (inList) {
+                htmlLines.push(`</${listType}>`);
+                inList = false;
+                listType = '';
+            }
+        };
+
+        lines.forEach(line => {
+            const isBlockTag = /^(<h[1-6]|<p|<div|<blockquote|<ul|<ol|<li|<pre|<img)/i.test(line);
+            if (isBlockTag) {
+                closeListIfNeeded();
+                htmlLines.push(line);
+                return;
+            }
+
+            if (line.startsWith('### ')) {
+                closeListIfNeeded();
+                htmlLines.push(`<h3 class="text-2xl font-black mt-12 mb-6 text-white uppercase font-cabinet tracking-tight">${line.substring(4).trim()}</h3>`);
+                return;
+            }
+            if (line.startsWith('## ')) {
+                closeListIfNeeded();
+                htmlLines.push(`<h2 class="text-3xl font-black mt-16 mb-8 text-white uppercase font-cabinet tracking-tight">${line.substring(3).trim()}</h2>`);
+                return;
+            }
+            if (line.startsWith('# ')) {
+                closeListIfNeeded();
+                htmlLines.push(`<h1 class="text-4xl font-black mt-16 mb-10 text-dr-gold uppercase font-cabinet tracking-tight">${line.substring(2).trim()}</h1>`);
+                return;
+            }
+            if (line.startsWith('> ')) {
+                closeListIfNeeded();
+                htmlLines.push(`<blockquote class="border-l-4 border-dr-gold pl-6 py-2 my-8 bg-white/[0.02] rounded-r-2xl text-white/90 italic font-medium">${line.substring(2).trim()}</blockquote>`);
+                return;
+            }
+
+            // Unordered List
+            if (line.startsWith('- ') || line.startsWith('* ')) {
+                if (!inList || listType !== 'ul') {
+                    closeListIfNeeded();
+                    htmlLines.push('<ul class="space-y-3 my-8">');
+                    inList = true;
+                    listType = 'ul';
+                }
+                let content = line.substring(2).trim();
+                content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+                htmlLines.push(`<li class="text-white/80">${content}</li>`);
+                return;
+            }
+
+            // Ordered List
+            if (/^\d+\.\s/.test(line)) {
+                if (!inList || listType !== 'ol') {
+                    closeListIfNeeded();
+                    htmlLines.push('<ol class="list-decimal pl-6 space-y-3 my-8 text-white/80">');
+                    inList = true;
+                    listType = 'ol';
+                }
+                let content = line.replace(/^\d+\.\s/, '').trim();
+                content = content.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+                htmlLines.push(`<li>${content}</li>`);
+                return;
+            }
+
+            closeListIfNeeded();
+
+            let formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+            
+            // Highlight emojis to make them pop
+            formattedLine = formattedLine.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '<span class="text-2xl mr-2 drop-shadow-lg inline-block align-middle">$1</span>');
+
+            htmlLines.push(`<p>${formattedLine}</p>`);
+        });
+
+        closeListIfNeeded();
+        enhanced = htmlLines.join('\n');
+
+        if (!enhanced.trim().startsWith('<div')) {
+            enhanced = `<div class="prose-container">\n${enhanced}\n</div>`;
+        }
+
+        return enhanced;
+    };
+
     return (
         <>
             {/* Reading Progress Bar */}
@@ -104,66 +204,136 @@ export default function ProjectTemplate({ project }: { project: ProjectData }) {
                         </Link>
                     </motion.div>
 
+                    <div className="mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        >
+                            <div className="mb-8 flex flex-wrap gap-4 items-center">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+                                    <div className="w-2 h-2 rounded-full bg-dr-gold animate-pulse" />
+                                    <span className="text-[10px] uppercase tracking-[0.2em] font-black text-white/60">
+                                        Case Study
+                                    </span>
+                                </div>
+                                
+                                <div className="flex gap-4">
+                                    {project.liveUrl && (
+                                        <a
+                                            href={project.liveUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="group inline-flex items-center gap-2 text-xs font-black tracking-widest text-dr-orange hover:text-white transition-all"
+                                        >
+                                            LIVE EXPERIENCE <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                        </a>
+                                    )}
+                                    {project.githubUrl && (
+                                        <a
+                                            href={project.githubUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="group inline-flex items-center gap-2 text-xs font-black tracking-widest text-dr-gold hover:text-white transition-all"
+                                        >
+                                            SOURCE CODE <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+
+                            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white mb-10 uppercase">
+                                {project.title.split(' ').map((word, i) => (
+                                    <span key={i} className={i % 2 !== 0 ? "text-gradient-gold" : ""}>
+                                        {word}{' '}
+                                    </span>
+                                ))}
+                            </h1>
+
+                            <div 
+                                className="text-xl md:text-2xl text-dr-text/80 leading-relaxed font-medium md:w-3/4 lg:w-2/3"
+                                dangerouslySetInnerHTML={{ 
+                                    __html: enhanceContent(project.description || 'No description available.')
+                                }}
+                            />
+                        </motion.div>
+                    </div>
+
+                    {/* Enormous Full-Width Main Device Preview */}
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 40 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                        className="mb-24"
+                    >
+                        <div className="glass p-2 md:p-4 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] relative group">
+                            <div className="w-full bg-[#0F1419] rounded-t-[2rem] border-b border-white/5 p-4 flex items-center justify-between">
+                                <div className="flex gap-2">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/30" />
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500/30" />
+                                    <div className="w-3 h-3 rounded-full bg-green-500/30" />
+                                </div>
+                                <div className="px-4 py-1 bg-white/5 rounded-full flex items-center gap-2">
+                                    <Search size={10} className="text-white/20" />
+                                    <span className="text-[9px] text-white/20 font-black tracking-widest uppercase">
+                                        {project.liveUrl || 'internal_preview'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] bg-[#0A0E1A] overflow-hidden relative rounded-b-[1.5rem]">
+                                {project.liveUrl ? (
+                                    <a href={project.liveUrl} target="_blank" rel="noreferrer" className="block w-full h-full relative cursor-pointer overflow-hidden group/link">
+                                        <div className="absolute inset-0 bg-dr-navy/60 opacity-0 group-hover/link:opacity-100 transition-opacity duration-500 z-10 flex items-center justify-center backdrop-blur-[2px]">
+                                            <motion.span 
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="px-8 py-4 bg-dr-gold text-dr-navy text-[11px] font-black tracking-[0.2em] rounded-full flex items-center gap-3 shadow-2xl uppercase"
+                                            >
+                                                LIVE EXPLORATION <ExternalLink className="w-4 h-4" />
+                                            </motion.span>
+                                        </div>
+                                        {mainImage && (
+                                            <Image
+                                                src={mainImage}
+                                                alt={project.title}
+                                                fill
+                                                sizes="100vw"
+                                                priority
+                                                className="w-full h-full object-cover object-top transition-transform duration-[2s] group-hover/link:scale-105"
+                                                onError={(e) => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.src = `https://image.thum.io/get/width/1200/crop/800/noanimate/${project.liveUrl}`;
+                                                }}
+                                            />
+                                        )}
+                                    </a>
+                                ) : (
+                                    <div className="w-full h-full relative">
+                                        {mainImage && (
+                                            <Image
+                                                src={mainImage}
+                                                alt={project.title}
+                                                fill
+                                                sizes="100vw"
+                                                priority
+                                                className="w-full h-full object-cover object-top"
+                                            />
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
+
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 mb-24">
                         {/* Left Column: Details */}
-                        <div className="lg:col-span-7">
+                        <div className="lg:col-span-8">
                             <motion.div
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.4 }}
                             >
-                                <div className="mb-8 flex flex-wrap gap-4 items-center">
-                                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-                                        <div className="w-2 h-2 rounded-full bg-dr-gold animate-pulse" />
-                                        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-white/60">
-                                            Case Study
-                                        </span>
-                                    </div>
-                                    
-                                    <div className="flex gap-4">
-                                        {project.liveUrl && (
-                                            <a
-                                                href={project.liveUrl}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="group inline-flex items-center gap-2 text-xs font-black tracking-widest text-dr-orange hover:text-white transition-all"
-                                            >
-                                                LIVE EXPERIENCE <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                            </a>
-                                        )}
-                                        {project.githubUrl && (
-                                            <a
-                                                href={project.githubUrl}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="group inline-flex items-center gap-2 text-xs font-black tracking-widest text-dr-gold hover:text-white transition-all"
-                                            >
-                                                SOURCE CODE <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-white mb-10 uppercase">
-                                    {project.title.split(' ').map((word, i) => (
-                                        <span key={i} className={i % 2 !== 0 ? "text-gradient-gold" : ""}>
-                                            {word}{' '}
-                                        </span>
-                                    ))}
-                                </h1>
-
-                                <div 
-                                    className="text-xl md:text-2xl text-dr-text/80 leading-relaxed mb-12 font-medium"
-                                    dangerouslySetInnerHTML={{ 
-                                        __html: (project.description || 'No description available.')
-                                            .replace(/&lt;/g, '<')
-                                            .replace(/&gt;/g, '>')
-                                            .replace(/&quot;/g, '"')
-                                            .replace(/&#39;/g, "'")
-                                            .replace(/&amp;/g, '&')
-                                    }}
-                                />
-
                                 <div className="space-y-16">
                                     {/* Tech Stack */}
                                     <section>
@@ -196,12 +366,7 @@ export default function ProjectTemplate({ project }: { project: ProjectData }) {
                                     {project.content && (
                                         <section className="prose prose-invert prose-dr max-w-none">
                                             <div dangerouslySetInnerHTML={{ 
-                                                __html: project.content
-                                                    .replace(/&lt;/g, '<')
-                                                    .replace(/&gt;/g, '>')
-                                                    .replace(/&quot;/g, '"')
-                                                    .replace(/&#39;/g, "'")
-                                                    .replace(/&amp;/g, '&')
+                                                __html: enhanceContent(project.content)
                                             }} />
                                         </section>
                                     )}
@@ -210,98 +375,8 @@ export default function ProjectTemplate({ project }: { project: ProjectData }) {
                         </div>
 
                         {/* Right Column: Interactive Gallery */}
-                        <div className="lg:col-span-5">
+                        <div className="lg:col-span-4">
                             <div className="sticky top-32 space-y-8">
-                                {/* Main Device Preview */}
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                    className="glass p-2 rounded-[2.5rem] border border-white/10 overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] relative group"
-                                >
-                                    <div className="w-full bg-[#0F1419] rounded-t-[2rem] border-b border-white/5 p-4 flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-red-500/30" />
-                                            <div className="w-3 h-3 rounded-full bg-yellow-500/30" />
-                                            <div className="w-3 h-3 rounded-full bg-green-500/30" />
-                                        </div>
-                                        <div className="px-4 py-1 bg-white/5 rounded-full flex items-center gap-2">
-                                            <Search size={10} className="text-white/20" />
-                                            <span className="text-[9px] text-white/20 font-black tracking-widest uppercase">
-                                                {project.liveUrl || 'internal_preview'}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div className="w-full aspect-[4/5] bg-[#0A0E1A] overflow-hidden relative">
-                                        {project.liveUrl ? (
-                                            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="block w-full h-full relative cursor-pointer overflow-hidden">
-                                                <div className="absolute inset-0 bg-dr-navy/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-center justify-center backdrop-blur-[2px]">
-                                                    <motion.span 
-                                                        whileHover={{ scale: 1.05 }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                        className="px-8 py-4 bg-dr-gold text-dr-navy text-[11px] font-black tracking-[0.2em] rounded-full flex items-center gap-3 shadow-2xl uppercase"
-                                                    >
-                                                        LIVE EXPLORATION <ExternalLink className="w-4 h-4" />
-                                                    </motion.span>
-                                                </div>
-                                                {mainImage && (
-                                                    <Image
-                                                        src={mainImage}
-                                                        alt={project.title}
-                                                        fill
-                                                        sizes="(max-width: 1024px) 100vw, 50vw"
-                                                        priority
-                                                        className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110"
-                                                        onError={(e) => {
-                                                            const target = e.target as HTMLImageElement;
-                                                            target.src = `https://image.thum.io/get/width/1200/crop/800/noanimate/${project.liveUrl}`;
-                                                        }}
-                                                    />
-                                                )}
-                                            </a>
-                                        ) : (
-                                            <div className="w-full h-full relative">
-                                                {mainImage && (
-                                                    <Image
-                                                        src={mainImage}
-                                                        alt={project.title}
-                                                        fill
-                                                        sizes="(max-width: 1024px) 100vw, 50vw"
-                                                        className="w-full h-full object-cover object-top"
-                                                    />
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                </motion.div>
-
-                                {/* Multi-Image Gallery Grid */}
-                                {images.length > 1 && (
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {images.slice(1).map((img: string, idx: number) => (
-                                            <motion.div 
-                                                key={idx}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                whileInView={{ opacity: 1, y: 0 }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: idx * 0.1 }}
-                                                whileHover={{ y: -5 }}
-                                                className="aspect-[16/10] glass rounded-2xl overflow-hidden border border-white/5 relative group cursor-zoom-in"
-                                            >
-                                                <Image 
-                                                    src={img} 
-                                                    alt={`Gallery ${idx + 1}`} 
-                                                    fill
-                                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                )}
-
                                 {/* Technical Specs Card */}
                                 <motion.div 
                                     initial={{ opacity: 0, y: 20 }}
@@ -328,6 +403,32 @@ export default function ProjectTemplate({ project }: { project: ProjectData }) {
                                         ))}
                                     </div>
                                 </motion.div>
+
+                                {/* Multi-Image Gallery Grid */}
+                                {images.length > 1 && (
+                                    <div className="grid grid-cols-1 gap-6">
+                                        {images.slice(1).map((img: string, idx: number) => (
+                                            <motion.div 
+                                                key={idx}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: idx * 0.1 }}
+                                                whileHover={{ y: -5 }}
+                                                className="aspect-[16/10] glass rounded-2xl overflow-hidden border border-white/5 relative group cursor-zoom-in"
+                                            >
+                                                <Image 
+                                                    src={img} 
+                                                    alt={`Gallery ${idx + 1}`} 
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

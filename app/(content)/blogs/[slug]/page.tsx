@@ -17,6 +17,8 @@ interface BlogPost {
   category: string
   authorName?: string
   image?: string
+  image1?: string
+  image2?: string
   metaTitle?: string
   metaDescription?: string
   focusKeyword?: string
@@ -103,11 +105,14 @@ export default async function BlogPostPage({
     { name: post.title, url: `/blogs/${post.slug}` },
   ])
 
+  const relatedPosts = await fetchJsonWithFallback<BlogPost[]>(['/api/blog'])
+  const filteredRelated = relatedPosts?.filter(p => p.slug !== post.slug).slice(0, 3) || []
+
   return (
     <>
       <StructuredData data={articleSchema} />
       <StructuredData data={breadcrumbs} />
-      <BlogTemplate post={post} />
+      <BlogTemplate post={post} relatedPosts={filteredRelated} />
     </>
   )
 }

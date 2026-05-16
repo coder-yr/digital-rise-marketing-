@@ -229,9 +229,32 @@ footer {
   line-height: 1.8;
 }
 
+.prose-container p {
+  margin-bottom: 1.5rem;
+}
+
 .prose-dr p {
   margin-bottom: 2rem;
   letter-spacing: 0.01em;
+}
+
+.prose-dr h1 {
+  font-family: 'Cabinet Grotesk', sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.04em !important;
+  text-transform: uppercase;
+  margin-top: 5rem !important;
+  margin-bottom: 2rem !important;
+  font-size: 3rem !important;
+  color: #D4AF37;
+  line-height: 1.1;
+}
+
+.prose-dr hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.3), transparent);
+  margin: 4rem 0 !important;
 }
 
 .prose-dr h2 {
@@ -268,17 +291,17 @@ footer {
 
 .prose-dr blockquote {
   border-left: 4px solid #D4AF37 !important;
-  background: rgba(212, 175, 55, 0.05);
-  padding: 2.5rem !important;
-  border-radius: 0 2rem 2rem 0;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2rem 2.5rem !important;
+  border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
   font-style: italic;
   color: #FFFFFF;
-  font-size: 1.5rem !important;
+  font-size: 1.25rem !important;
   line-height: 1.6;
   margin: 4rem 0 !important;
-  border-top: 1px solid rgba(212, 175, 55, 0.1);
-  border-right: 1px solid rgba(212, 175, 55, 0.1);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .prose-dr img {
@@ -336,4 +359,30 @@ footer {
   background-repeat: no-repeat;
   background-size: 100% 0.3em;
   background-position: 0 88%;
+}
+
+/* Code Blocks */
+.prose-dr pre {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem !important;
+  margin: 3rem 0 !important;
+  overflow-x: auto;
+}
+
+.prose-dr pre code {
+  background: transparent !important;
+  color: #E5E7EB !important;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.prose-dr :not(pre) > code {
+  background: rgba(212, 175, 55, 0.1);
+  color: #D4AF37;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.9em;
 }
