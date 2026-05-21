@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
-import { EXCLUDED_PATHS, SITE_URL } from '@/lib/sitemap-utils'
+import { EXCLUDED_PATHS } from '@/lib/sitemap-utils'
+import { SITE_URL } from '@/lib/site'
 
 /**
  * 🔧 SEO FIX: Comprehensive robots.txt
@@ -14,7 +15,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           ...EXCLUDED_PATHS,
-          '/*?*', // Block query-string variants from indexing
         ],
       },
       {

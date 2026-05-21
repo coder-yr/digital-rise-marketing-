@@ -17,8 +17,6 @@ interface BlogPost {
   category: string
   authorName?: string
   image?: string
-  image1?: string
-  image2?: string
   metaTitle?: string
   metaDescription?: string
   focusKeyword?: string
@@ -28,6 +26,19 @@ interface BlogPost {
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   return fetchJsonWithFallback<BlogPost>([`/api/blog/${slug}`])
+}
+
+async function getRelatedPosts(currentSlug: string): Promise<BlogPost[]> {
+  try {
+    const blogs = await fetchJsonWithFallback<BlogPost[]>(['/api/blog'])
+    if (!blogs) {
+      return []
+    }
+
+    return blogs.filter((blog) => blog.slug !== currentSlug).slice(0, 3)
+  } catch {
+    return []
+  }
 }
 
 // ✅ SEO FIX: Pre-generate static paths for all existing blogs at build time
@@ -81,7 +92,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const post = await getBlogPost(slug)
+  const [post, relatedPosts] = await Promise.all([
+    getBlogPost(slug),
+    getRelatedPosts(slug),
+  ])
 
   if (!post) {
     notFound()
@@ -105,14 +119,11 @@ export default async function BlogPostPage({
     { name: post.title, url: `/blogs/${post.slug}` },
   ])
 
-  const relatedPosts = await fetchJsonWithFallback<BlogPost[]>(['/api/blog'])
-  const filteredRelated = relatedPosts?.filter(p => p.slug !== post.slug).slice(0, 3) || []
-
   return (
     <>
       <StructuredData data={articleSchema} />
       <StructuredData data={breadcrumbs} />
-      <BlogTemplate post={post} relatedPosts={filteredRelated} />
+      <BlogTemplate post={post} relatedPosts={relatedPosts} />
     </>
   )
 }

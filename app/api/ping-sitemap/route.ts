@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.digitalrisemarketing.in'
+import { SITE_URL } from '@/lib/site'
 const SITEMAP_URL = `${SITE_URL}/sitemap.xml`
 
 /**
  * ✅ SEO FIX: Ping Google & Bing to crawl sitemap after new content is published.
  *
  * Call from your admin/backend after creating/updating a blog or project:
- *   POST https://www.digitalrisemarketing.in/api/ping-sitemap
+ *   POST https://digitalrisemarketing.in/api/ping-sitemap
  *   Body: { "secret": "<PING_SECRET>" }
  *
  * Set PING_SECRET env var to a random string for basic auth.

@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
-import { WhatsAppCTA } from "@/components/WhatsAppCTA";
-import { AIChatbot } from "@/components/AIChatbot";
 import SmoothScroll from "@/components/SmoothScroll";
 import { constructMetadata } from "@/lib/seo";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import StructuredData from "@/components/ui/StructuredData";
+import GlobalClientFeatures from "@/components/layout/GlobalClientFeatures";
 
 /**
  * 🔧 SEO FIX: Centralized Root Metadata & Global Schema
@@ -53,10 +52,15 @@ export default function RootLayout({
         <StructuredData data={websiteSchema()} />
       </head>
       <body className="antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999] focus:rounded-lg focus:bg-dr-gold focus:px-4 focus:py-2 focus:text-dr-navy focus:font-bold"
+        >
+          Skip to content
+        </a>
         <SmoothScroll>
           {children}
-          <WhatsAppCTA />
-          <AIChatbot />
+          <GlobalClientFeatures />
         </SmoothScroll>
       </body>
     </html>

@@ -1,4 +1,3 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.digitalrisemarketing.in';
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digitalrise-marketing-backend-3.onrender.com';
 
 // Excluded paths to prevent crawl budget waste

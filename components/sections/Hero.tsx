@@ -6,20 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const Hero = () => {
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "MarketingAgency",
-        "name": "DigitalRise Marketing",
-        "description": "Premium digital marketing agency in Badlapur City specializing in AI, Performance Ads, and Web Architecture.",
-        "url": "https://www.digitalrisemarketing.in",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Badlapur City",
-            "addressRegion": "Maharashtra",
-            "addressCountry": "IN"
-        }
-    };
-
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -45,11 +31,6 @@ const Hero = () => {
 
     return (
         <section className="min-h-[90vh] flex flex-col justify-center items-center px-6 pt-32 pb-20 relative overflow-hidden">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-
             {/* Background Mesh Gradients */}
             <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden h-full">
                 <motion.div
@@ -103,7 +84,7 @@ const Hero = () => {
 
                 <motion.h1
                     variants={itemVariants}
-                    className="text-5xl md:text-8xl lg:text-[7rem] font-black tracking-tighter leading-[0.9] mb-12 flex flex-col items-center text-center"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] font-black tracking-tighter leading-[0.9] mb-12 flex flex-col items-center text-center"
                 >
                     <span className="text-[0.4em] font-bold tracking-[0.2em] text-dr-gold/80 block mb-6 uppercase">
                         Digital Marketing Agency in Badlapur City
@@ -118,10 +99,10 @@ const Hero = () => {
                     We synthesize high-conversion web architecture, AI automation, and performance marketing into <span className="text-white/80">engineered growth engines.</span>
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-10 mb-20">
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 mb-12 sm:mb-20">
                     <Link
                         href="/booking"
-                        className="group relative px-12 py-6 bg-dr-gold text-dr-navy font-bold text-xs tracking-[0.2em] rounded-2xl transition-all duration-500 overflow-hidden shadow-[0_20px_50px_-10px_rgba(212,175,55,0.3)] hover:scale-105 hover:-translate-y-1 flex items-center gap-3"
+                        className="group relative px-6 py-3 sm:px-12 sm:py-6 bg-dr-gold text-dr-navy font-bold text-xs tracking-[0.2em] rounded-2xl transition-all duration-500 overflow-hidden shadow-[0_20px_50px_-10px_rgba(212,175,55,0.3)] hover:scale-105 hover:-translate-y-1 flex items-center gap-3"
                     >
                         <span className="relative z-10 flex items-center gap-4">
                             START YOUR ASCENT

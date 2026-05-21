@@ -1,4 +1,5 @@
-import { buildXml, SITE_URL, safeDate } from '@/lib/sitemap-utils';
+import { buildXml, safeDate } from '@/lib/sitemap-utils';
+import { SITE_URL } from '@/lib/site';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';

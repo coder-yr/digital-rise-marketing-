@@ -1,4 +1,5 @@
-import { buildXml, SITE_URL, safeDate } from '@/lib/sitemap-utils';
+import { buildXml, safeDate } from '@/lib/sitemap-utils';
+import { SITE_URL } from '@/lib/site';
 import { localSeoCities } from '@/lib/localSeo';
 import { NextResponse } from 'next/server';
 

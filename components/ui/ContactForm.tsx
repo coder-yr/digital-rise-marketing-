@@ -85,6 +85,7 @@ export default function ContactForm() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    autoComplete="name"
                     placeholder="John Doe"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-sm focus:outline-none focus:border-dr-gold transition-colors placeholder:text-white/20"
                     required
@@ -101,6 +102,7 @@ export default function ContactForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="email"
                     placeholder="john@company.com"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-sm focus:outline-none focus:border-dr-gold transition-colors placeholder:text-white/20"
                     required
@@ -117,7 +119,9 @@ export default function ContactForm() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+1 (555) 000-0000"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="+91 70216 02399"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-sm focus:outline-none focus:border-dr-gold transition-colors placeholder:text-white/20"
                     required
                 />
@@ -133,6 +137,7 @@ export default function ContactForm() {
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
+                    autoComplete="url"
                     placeholder="https://yourcompany.com"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-sm focus:outline-none focus:border-dr-gold transition-colors placeholder:text-white/20"
                 />

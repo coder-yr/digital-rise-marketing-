@@ -1,29 +1,19 @@
 /**
- * 🔧 SEO FIX: Centralized Schema Markup (JSON-LD) Generators
- *
- * This file provides all structured data generators in one place:
- * - Organization schema (sitewide)
- * - LocalBusiness schema (homepage + local pages)
- * - BreadcrumbList schema (all pages)
- * - BlogPosting schema (blog detail pages)
- * - FAQPage schema (FAQ sections)
- * - Service schema (service pages)
- * - WebSite schema with SearchAction (sitelinks search box)
+ * Centralized schema markup generators.
  */
 
-const BASE_URL = 'https://www.digitalrisemarketing.in'
-const SITE_NAME = 'DigitalRise Marketing'
-const LOGO_URL = `${BASE_URL}/icon.png`
-const PHONE = '+91XXXXXXXXXX' // Replace with actual phone
+import { SITE_DESCRIPTION, SITE_NAME, SITE_PHONE, SITE_URL, SOCIAL_LINKS } from './site'
+
+const LOGO_URL = `${SITE_URL}/icon.png`
 
 // ── Organization (appears sitewide) ──────────────────────────────
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': `${BASE_URL}/#organization`,
+    '@id': `${SITE_URL}/#organization`,
     name: SITE_NAME,
-    url: BASE_URL,
+    url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
       url: LOGO_URL,
@@ -32,13 +22,13 @@ export function organizationSchema() {
     },
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: PHONE,
+      telephone: SITE_PHONE,
       contactType: 'customer service',
       areaServed: 'IN',
       availableLanguage: ['English', 'Hindi'],
     },
     sameAs: [
-      'https://www.instagram.com/digitalrisemarketing',
+      SOCIAL_LINKS.instagram,
       // Add more social profiles as they go live
     ],
   }
@@ -49,15 +39,15 @@ export function websiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': `${BASE_URL}/#website`,
+    '@id': `${SITE_URL}/#website`,
     name: SITE_NAME,
-    url: BASE_URL,
-    publisher: { '@id': `${BASE_URL}/#organization` },
+    url: SITE_URL,
+    publisher: { '@id': `${SITE_URL}/#organization` },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/blogs?q={search_term_string}`,
+        urlTemplate: `${SITE_URL}/blogs?search={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -74,19 +64,18 @@ export function localBusinessSchema(overrides?: {
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
-    '@id': `${overrides?.url || BASE_URL}/#localbusiness`,
+    '@id': `${overrides?.url || SITE_URL}/#localbusiness`,
     name: overrides?.name || SITE_NAME,
     image: LOGO_URL,
     description:
-      overrides?.description ||
-      'DigitalRise Marketing is the leading digital marketing agency in Badlapur City. We specialize in AI automation, SEO, paid ads, and high-conversion web architecture.',
-    url: overrides?.url || BASE_URL,
-    telephone: PHONE,
+      overrides?.description || SITE_DESCRIPTION,
+    url: overrides?.url || SITE_URL,
+    telephone: SITE_PHONE,
     priceRange: '$$',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Hendrepada, Badlapur West',
-      addressLocality: 'Badlapur City',
+      addressLocality: 'Badlapur',
       addressRegion: 'Maharashtra',
       postalCode: '421503',
       addressCountry: 'IN',
@@ -100,9 +89,11 @@ export function localBusinessSchema(overrides?: {
       '@type': a.type,
       name: a.name,
     })) || [
-      { '@type': 'City', name: 'Badlapur City' },
+      { '@type': 'City', name: 'Badlapur' },
       { '@type': 'City', name: 'Kalyan' },
       { '@type': 'City', name: 'Ambernath' },
+      { '@type': 'City', name: 'Thane' },
+      { '@type': 'City', name: 'Ghatkopar' },
       { '@type': 'City', name: 'Mumbai' },
       { '@type': 'State', name: 'Maharashtra' },
     ],
@@ -154,13 +145,13 @@ export function breadcrumbSchema(
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: SITE_URL,
       },
       ...items.map((item, index) => ({
         '@type': 'ListItem',
         position: index + 2,
         name: item.name,
-        ...(item.url && { item: item.url.startsWith('http') ? item.url : `${BASE_URL}${item.url}` }),
+        ...(item.url && { item: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}` }),
       })),
     ],
   }
@@ -186,8 +177,8 @@ export function blogPostingSchema({
   authorName?: string
   wordCount?: number
 }) {
-  const articleUrl = `${BASE_URL}/blogs/${slug}`
-  const imageUrl = image?.startsWith('http') ? image : `${BASE_URL}${image || '/icon.png'}`
+  const articleUrl = `${SITE_URL}/blogs/${slug}`
+  const imageUrl = image?.startsWith('http') ? image : `${SITE_URL}${image || '/icon.png'}`
 
   return {
     '@context': 'https://schema.org',
@@ -208,7 +199,7 @@ export function blogPostingSchema({
     author: {
       '@type': 'Person',
       name: authorName || 'DigitalRise Team',
-      url: `${BASE_URL}/about`,
+      url: `${SITE_URL}/about`,
     },
     publisher: {
       '@type': 'Organization',
@@ -219,7 +210,7 @@ export function blogPostingSchema({
       },
     },
     ...(wordCount && { wordCount }),
-    isPartOf: { '@id': `${BASE_URL}/#website` },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
   }
 }
 
@@ -251,7 +242,7 @@ export function serviceSchema({
   description: string
   url: string
 }) {
-  const serviceUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`
+  const serviceUrl = url.startsWith('http') ? url : `${SITE_URL}${url}`
 
   return {
     '@context': 'https://schema.org',
@@ -263,7 +254,7 @@ export function serviceSchema({
     provider: {
       '@type': 'Organization',
       name: SITE_NAME,
-      url: BASE_URL,
+      url: SITE_URL,
     },
     areaServed: {
       '@type': 'State',

@@ -386,3 +386,32 @@ footer {
   font-family: monospace;
   font-size: 0.9em;
 }
+
+/* Mobile typography and layout adjustments */
+@media (max-width: 768px) {
+  .prose-dr {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .prose-dr h1 {
+    font-size: 1.75rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .prose-dr h2 {
+    font-size: 1.25rem !important;
+    margin-top: 1.75rem !important;
+  }
+
+  .prose-dr > div > p:first-of-type::first-letter {
+    font-size: 3.25rem;
+  }
+
+  /* Reduce heavy backdrop blur on small screens for performance */
+  .glass { backdrop-filter: blur(4px); }
+
+  /* Ensure global paddings are comfortable on small screens */
+  main, section { padding-left: 1rem; padding-right: 1rem; }
+}

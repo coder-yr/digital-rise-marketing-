@@ -1,8 +1,7 @@
 import { Metadata } from 'next'
+import { SITE_NAME, SITE_URL } from './site'
 
-const BASE_URL = 'https://www.digitalrisemarketing.in'
-const SITE_NAME = 'DigitalRise Marketing'
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`
 
 interface ConstructMetadataProps {
   title?: string
@@ -32,15 +31,15 @@ export function constructMetadata({
   const canonicalUrl = canonical
     ? canonical.startsWith('http')
       ? canonical
-      : `${BASE_URL}${canonical.startsWith('/') ? canonical : `/${canonical}`}`
+      : `${SITE_URL}${canonical.startsWith('/') ? canonical : `/${canonical}`}`
     : undefined
 
-  const imageUrl = image.startsWith('http') ? image : `${BASE_URL}${image}`
+  const imageUrl = image.startsWith('http') ? image : `${SITE_URL}${image}`
 
   return {
     title,
     description,
-    metadataBase: new URL(BASE_URL),
+    metadataBase: new URL(SITE_URL),
 
     ...(keywords && { keywords }),
 
@@ -53,7 +52,7 @@ export function constructMetadata({
     openGraph: {
       title,
       description,
-      url: canonicalUrl || BASE_URL,
+      url: canonicalUrl || SITE_URL,
       siteName: SITE_NAME,
       locale: 'en_IN',
       type,

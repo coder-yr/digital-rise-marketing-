@@ -44,7 +44,7 @@ export default function BlogIndexClient({ blogs }: { blogs: BlogIndexItem[] }) {
     };
 
     return (
-        <main className="relative min-h-screen bg-dr-navy text-white overflow-hidden">
+        <main id="main-content" className="relative min-h-screen bg-dr-navy text-white overflow-hidden">
             {/* Visual Background Elements */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] mix-blend-overlay"></div>
@@ -134,7 +134,7 @@ export default function BlogIndexClient({ blogs }: { blogs: BlogIndexItem[] }) {
                                             fill
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                             className="object-cover group-hover:scale-105 transition-transform duration-1000"
-                                            priority={index < 4}
+                                            priority={index === 0}
                                         />
 
                                         {/* Overlay for better text readability */}

@@ -72,15 +72,18 @@ const FAQ = () => {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
+                            id={`faq-panel-${index}`}
                             className={`glass rounded-2xl border transition-all duration-300 overflow-hidden ${openIndex === index
                                     ? "border-dr-gold/30 bg-white/[0.05]"
                                     : "border-white/5 bg-white/[0.02] hover:border-white/10"
                                 }`}
                         >
                             <button
+                                type="button"
                                 onClick={() => toggleFAQ(index)}
                                 className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                                 aria-expanded={openIndex === index}
+                                aria-controls={`faq-answer-${index}`}
                             >
                                 <span className={`font-bold text-lg ${openIndex === index ? 'text-dr-gold' : 'text-white'}`}>
                                     {faq.question}
@@ -91,6 +94,9 @@ const FAQ = () => {
                             </button>
 
                             <div
+                                id={`faq-answer-${index}`}
+                                role="region"
+                                aria-label={faq.question}
                                 className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                                     }`}
                             >

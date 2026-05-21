@@ -1,4 +1,5 @@
-import { buildSitemapIndex, SITE_URL } from '@/lib/sitemap-utils';
+import { buildSitemapIndex } from '@/lib/sitemap-utils';
+import { SITE_URL } from '@/lib/site';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';

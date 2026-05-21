@@ -40,6 +40,20 @@ const nextConfig: NextConfig = {
   // 🔧 SEO FIX #3: Security + cache headers
   // ───────────────────────────────────────────────
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "form-action 'self' https://digitalrise-marketing-backend-3.onrender.com",
+      "frame-ancestors 'none'",
+      "img-src 'self' data: blob: https://images.unsplash.com https://sqtkbfcbjommazyxenwf.supabase.co https://www.googletagmanager.com https://www.google-analytics.com",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://code.iconify.design",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com",
+      "font-src 'self' data: https://fonts.gstatic.com https://api.fontshare.com",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://digitalrise-marketing-backend-3.onrender.com",
+      "object-src 'none'",
+      "upgrade-insecure-requests",
+    ].join('; ');
+
     return [
       {
         source: "/sitemap.xml",
@@ -63,6 +77,11 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
+          { key: "Content-Security-Policy-Report-Only", value: csp },
         ],
       },
     ];

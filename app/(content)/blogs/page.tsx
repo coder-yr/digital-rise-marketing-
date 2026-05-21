@@ -3,6 +3,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import BlogIndexClient from '@/components/blog/BlogIndexClient';
 import { fetchJsonWithFallback } from '@/lib/api';
+import { SITE_URL } from '@/lib/site';
 
 type BlogSummary = {
     title: string;
@@ -13,8 +14,8 @@ type BlogSummary = {
 
 // Metadata for SEO
 export const metadata: Metadata = {
-    title: 'Digital Marketing Blogs | DigitalRise',
-    description: 'Read the latest digital marketing blogs, SEO guides, and performance marketing strategies from DigitalRise to scale your local business.',
+    title: 'Digital Marketing Blogs in Badlapur | DigitalRise Marketing',
+    description: 'Read SEO, AI automation, paid ads, and website growth guides from DigitalRise Marketing for Badlapur, Ambernath, Thane, Ghatkopar, and Mumbai.',
     alternates: {
         canonical: '/blogs',
     },
@@ -39,11 +40,11 @@ export default async function BlogIndexPage() {
         '@context': 'https://schema.org',
         '@type': 'Blog',
         name: 'Digital Marketing Blogs | DigitalRise',
-        url: 'https://www.digitalrisemarketing.in/blogs',
+        url: `${SITE_URL}/blogs`,
         blogPost: blogs.map((blog) => ({
             '@type': 'BlogPosting',
             headline: blog.title,
-            url: `https://www.digitalrisemarketing.in/blogs/${blog.slug}`,
+            url: `${SITE_URL}/blogs/${blog.slug}`,
             datePublished: blog.createdAt || blog.date,
         }))
     };

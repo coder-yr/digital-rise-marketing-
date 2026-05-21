@@ -9,6 +9,7 @@ import ContactForm from "@/components/ui/ContactForm";
 import StructuredData from "@/components/ui/StructuredData";
 import type { LocalSeoCity } from "@/lib/localSeo";
 import { localBusinessSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
+import { SITE_URL } from "@/lib/site";
 
 /**
  * 🔧 SEO FIX: Local SEO Landing Page Component Refactor
@@ -19,13 +20,13 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
  * 3. Improved semantic structure for better indexing.
  */
 
-const whatsappHref = "https://wa.me/91XXXXXXXXXX?text=Hi%20DigitalRise%2C%20I%20want%20to%20grow%20my%20local%20leads.";
+const whatsappHref = "https://wa.me/917021602399?text=Hi%20DigitalRise%2C%20I%20want%20to%20grow%20my%20local%20leads.";
 
 export default function LocalSeoLandingPage({ city }: { city: LocalSeoCity }) {
   // Generate Schemas
   const lbSchema = localBusinessSchema({
     name: `DigitalRise Marketing - ${city.cityName}`,
-    url: `https://www.digitalrisemarketing.in${city.canonicalPath}`,
+    url: `${SITE_URL}${city.canonicalPath}`,
     description: city.metaDescription,
     areaServed: [
       { type: "City", name: city.cityName },
@@ -58,7 +59,7 @@ export default function LocalSeoLandingPage({ city }: { city: LocalSeoCity }) {
       <StructuredData data={bSchema} />
       <StructuredData data={fSchema} />
       <Header />
-      <main className="relative overflow-hidden bg-dr-navy text-white pt-40 pb-20">
+      <main id="main-content" className="relative overflow-hidden bg-dr-navy text-white pt-40 pb-20">
         <div className="fixed inset-0 pointer-events-none z-0">
           <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-dr-gold/10 rounded-full blur-[150px]" />
           <div className="hidden md:block absolute bottom-[15%] -right-[5%] w-[520px] h-[520px] bg-dr-orange/10 rounded-full blur-[140px]" />

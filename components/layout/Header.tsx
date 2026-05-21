@@ -122,7 +122,6 @@ const Header = () => {
                             fill
                             sizes="(max-width: 768px) 180px, 220px"
                             className="object-contain object-left scale-135 origin-left"
-                            priority
                         />
                     </div>
                 </Link>
@@ -133,7 +132,12 @@ const Header = () => {
                     </Link>
 
                     <div onMouseEnter={handleMouseEnter} className="relative h-full flex items-center">
-                        <button className="text-sm font-medium text-white/70 hover:text-[#D4AF37] transition-colors tracking-wide flex items-center gap-1">
+                        <button
+                            type="button"
+                            className="text-sm font-medium text-white/70 hover:text-[#D4AF37] transition-colors tracking-wide flex items-center gap-1"
+                            aria-haspopup="menu"
+                            aria-expanded={hoveredService}
+                        >
                             Services
                             <ChevronDown size={14} className={`transition-transform duration-300 ${hoveredService ? "rotate-180 text-[#D4AF37]" : ""}`} />
                         </button>
@@ -160,7 +164,14 @@ const Header = () => {
                     </Link>
                 </div>
 
-                <button className="md:hidden text-white hover:text-[#D4AF37] transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <button
+                    type="button"
+                    className="md:hidden text-white hover:text-[#D4AF37] transition-colors"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-expanded={isMobileMenuOpen}
+                    aria-controls="mobile-navigation"
+                    aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                >
                     {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
@@ -326,6 +337,7 @@ const Header = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
+                        id="mobile-navigation"
                         className="md:hidden bg-[#0A0E1A] border-b border-white/10 overflow-hidden"
                     >
                         <div className="flex flex-col p-6 gap-6">

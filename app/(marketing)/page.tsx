@@ -22,8 +22,8 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
  */
 
 export const metadata = constructMetadata({
-  title: "DigitalRise Marketing | #1 Digital Marketing Agency in Badlapur City",
-  description: "DigitalRise Marketing specializes in AI automation, SEO, and performance marketing in Badlapur and Mumbai. Transform your local business into a high-conversion brand.",
+  title: "DigitalRise Marketing | Digital Marketing Agency in Badlapur",
+  description: "DigitalRise Marketing helps businesses in Badlapur, Ambernath, Thane, Ghatkopar, and Mumbai grow through SEO, web development, AI automation, and performance marketing.",
   canonical: "/",
 });
 
@@ -33,7 +33,7 @@ export default function Home() {
       <StructuredData data={localBusinessSchema()} />
       <Header />
 
-      <main className="relative z-10">
+      <main id="main-content" className="relative z-10">
         {/* Ambient Background */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="hidden lg:block absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] rounded-full opacity-40" />
@@ -51,9 +51,9 @@ export default function Home() {
                 <h2 className="text-xs font-bold tracking-[0.4em] text-dr-gold uppercase mb-6">
                   Services
                 </h2>
-                <h2 className="text-4xl md:text-6xl font-medium tracking-tight leading-none text-white">
+                <h3 className="text-4xl md:text-6xl font-medium tracking-tight leading-none text-white">
                   Everything you need to grow—<span className="text-dr-text/40">under one roof.</span>
-                </h2>
+                </h3>
                 <p className="mt-8 text-dr-text/40 text-lg max-w-xl">
                   A tight system across website, ads, organic, automation, and content—designed to work together and multiply results.
                 </p>

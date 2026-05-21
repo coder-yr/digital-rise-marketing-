@@ -17,7 +17,7 @@ export default function ProjectsPage() {
         <>
             <Header />
 
-            <main className="relative z-10 pt-32 pb-20 bg-dr-navy min-h-screen">
+            <main id="main-content" className="relative z-10 pt-32 pb-20 bg-dr-navy min-h-screen">
                 {/* Ambient Background */}
                 <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
                     <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-dr-gold/5 rounded-full blur-[150px]" />

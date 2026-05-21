@@ -1,4 +1,5 @@
-import { buildXml, SITE_URL, API_URL, safeDate, escapeXml } from '@/lib/sitemap-utils';
+import { buildXml, API_URL, safeDate, escapeXml } from '@/lib/sitemap-utils';
+import { SITE_URL } from '@/lib/site';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
