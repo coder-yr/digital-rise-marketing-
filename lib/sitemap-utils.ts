@@ -1,4 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digitalrise-marketing-backend-3.onrender.com';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digirise-backend-production.up.railway.app/';
 
 // Excluded paths to prevent crawl budget waste
 export const EXCLUDED_PATHS = [

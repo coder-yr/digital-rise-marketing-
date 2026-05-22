@@ -6,7 +6,7 @@ import { constructMetadata } from '@/lib/seo';
 import StructuredData from '@/components/ui/StructuredData';
 import { ProjectData } from '@/components/project/ProjectTemplate';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digitalrise-marketing-backend-3.onrender.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digirise-backend-production.up.railway.app/';
 
 async function getProject(slug: string): Promise<ProjectData | null> {
     try {

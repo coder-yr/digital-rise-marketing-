@@ -64,7 +64,7 @@ const Header = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://digitalrise-marketing-backend-3.onrender.com";
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://digirise-backend-production.up.railway.app/";
                 const cleanUrl = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
                 const res = await fetch(`${cleanUrl}/api/services`);
                 if (res.ok) {
