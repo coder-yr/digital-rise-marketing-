@@ -43,13 +43,13 @@ const nextConfig: NextConfig = {
     const csp = [
       "default-src 'self'",
       "base-uri 'self'",
-      "form-action 'self' https://digirise-backend-production.up.railway.app/",
+      "form-action 'self' https://captivating-purpose-production-88fb.up.railway.app/",
       "frame-ancestors 'none'",
       "img-src 'self' data: blob: https://images.unsplash.com https://sqtkbfcbjommazyxenwf.supabase.co https://www.googletagmanager.com https://www.google-analytics.com",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://code.iconify.design",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com",
       "font-src 'self' data: https://fonts.gstatic.com https://api.fontshare.com",
-      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://digirise-backend-production.up.railway.app/",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://captivating-purpose-production-88fb.up.railway.app/",
       "object-src 'none'",
       "upgrade-insecure-requests",
     ].join('; ');

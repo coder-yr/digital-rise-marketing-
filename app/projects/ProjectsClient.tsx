@@ -12,7 +12,7 @@ export default function ProjectsClient() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://digirise-backend-production.up.railway.app/';
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://captivating-purpose-production-88fb.up.railway.app/';
                 const cleanUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
                 const res = await fetch(`${cleanUrl}/api/projects?t=${Date.now()}`); // Cache busting
                 if (res.ok) {

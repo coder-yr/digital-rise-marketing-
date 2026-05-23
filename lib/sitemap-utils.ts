@@ -1,4 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://digirise-backend-production.up.railway.app/';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://captivating-purpose-production-88fb.up.railway.app/';
 
 // Excluded paths to prevent crawl budget waste
 export const EXCLUDED_PATHS = [

@@ -22,7 +22,7 @@ export default function ContactForm() {
         e.preventDefault();
         setStatus("loading");
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://digirise-backend-production.up.railway.app/';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://captivating-purpose-production-88fb.up.railway.app/';
             const cleanUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
             const res = await fetch(`${cleanUrl}/api/submissions/contact`, {
                 method: "POST",

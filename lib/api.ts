@@ -1,4 +1,4 @@
-const DEFAULT_API_URL = 'https://digirise-backend-production.up.railway.app/';
+const DEFAULT_API_URL = 'https://captivating-purpose-production-88fb.up.railway.app/';
 const LOCAL_API_URL = 'http://localhost:5000';
 
 export function getApiBaseUrls() {
